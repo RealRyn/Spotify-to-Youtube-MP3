@@ -54,4 +54,6 @@ for data in jsonR["tracks"]["items"]:
         else:
             youtube_url = f"https://www.youtube.com{video['url_suffix']}"
             print(f"Found video URL: {youtube_url}")
+            file.write(youtube_url + "\n")
             youtube_to_mp3(youtube_url)  # Convert to MP3
+
