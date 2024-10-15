@@ -1,8 +1,12 @@
 Usage:
 download as repo
+
 run main.py
+
 input spotify playlist link (playlist -> menu -> share -> copy link to playlist)
+
 mp3 files will be downloaded to the repo folder
+
 Enjoy!
 
 
