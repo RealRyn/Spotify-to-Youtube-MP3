@@ -10,6 +10,7 @@ mp3 files will be downloaded to the repo folder
 
 Enjoy!
 
+--
 
 
  getting an access token from spotify
@@ -20,6 +21,8 @@ Enjoy!
  
  create an 'app' and reveal the ID's by navigating to the 'Settings'
  
+
+--
 
 
 data = {
