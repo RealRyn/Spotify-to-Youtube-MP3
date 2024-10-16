@@ -6,7 +6,7 @@ run main.py
 
 input spotify playlist link (playlist -> menu -> share -> copy link to playlist)
 
-mp3 files will be downloaded to the repo folder
+.mp3 files will be downloaded to the repo folder, list.txt will have the youtube links of these files.
 
 Enjoy!
 
