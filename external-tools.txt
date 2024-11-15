@@ -1,3 +1,0 @@
-"Generate a Youtube Playlist from a List of Links":
-
-https://apps.dominiczelek.com/youtube-playlist-from-links/
