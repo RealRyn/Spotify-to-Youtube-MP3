@@ -1,9 +1,8 @@
 import requests
 from youtube_search import YoutubeSearch
 import json
-import sys
 import yt_dlp
-from functions_file import finditem, youtube_to_mp3
+from functions_file import finditem, youtube_to_mp3, generate_playlist
 
 # generated using : https://curlconverter.com/ to convert
 # https://developer.spotify.com/documentation/web-api/reference/get-playlist curl request
@@ -21,7 +20,7 @@ data = {
 
 response1 = requests.post('https://accounts.spotify.com/api/token', data=data)
 
-# print(response1.json())
+#print(response1.json())
 token = response1.json()['access_token']
 
 headers = {
@@ -38,12 +37,16 @@ response = requests.get(f'https://api.spotify.com/v1/playlists/{link}', params=p
 
 
 jsonR = response.json()
+#print(jsonR)
+file = open("list.txt", "w+")
+
 
 for data in jsonR["tracks"]["items"]:
     track = finditem(data, "name")
     artist = data['track']['album']['artists'][0]['name']
 
     results = YoutubeSearch(track + " " + artist, max_results=1).to_json()
+
     print(track + " " + artist)
     results = json.loads(results)
 
@@ -57,3 +60,10 @@ for data in jsonR["tracks"]["items"]:
             file.write(youtube_url + "\n")
             youtube_to_mp3(youtube_url)  # Convert to MP3
 
+#A link to a YouTube playlist containing all the songs from the spotify playlist.
+file.seek(0)
+print("\n\n\n")
+print("YouTube Playlist Link: ")
+print(generate_playlist(file.read()))
+
+file.close()
