@@ -3,8 +3,8 @@
 Effortlessly convert Spotify playlists into downloadable `.mp3` files and manage YouTube links with added features for convenience. 🎵🎥
 
 ![Version](https://img.shields.io/badge/Version-1.1-brightgreen)  
-![License](https://img.shields.io/github/license/username/Spotify-to-Youtube-MP3)  
-![Issues](https://img.shields.io/github/issues/username/Spotify-to-Youtube-MP3)
+![License](https://img.shields.io/github/license/RealRyn/Spotify-to-Youtube-MP3)  
+![Issues](https://img.shields.io/github/issues/RealRyn/Spotify-to-Youtube-MP3)
 
 ---
 
@@ -58,8 +58,7 @@ Effortlessly convert Spotify playlists into downloadable `.mp3` files and manage
 
 ## **Screenshots**
 ### Example Output:
-![Example Screenshot](https://via.placeholder.com/800x400.png?text=Your+Screenshot+Here)  
-*(Replace this placeholder with an actual screenshot of your application in action.)*
+reserved.
 
 ---
 
