@@ -33,7 +33,7 @@ Effortlessly convert Spotify playlists into downloadable `.mp3` files and manage
 ## **Installation**
 1. Clone the repository:
     ```bash
-    git clone https://github.com/username/Spotify-to-Youtube-MP3.git
+    git clone https://github.com/RealRyn/Spotify-to-Youtube-MP3.git
     cd Spotify-to-Youtube-MP3
     ```
 2. Install dependencies:
