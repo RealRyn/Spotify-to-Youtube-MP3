@@ -1,69 +1,85 @@
 import requests
 from youtube_search import YoutubeSearch
 import json
-import yt_dlp
 from functions_file import finditem, youtube_to_mp3, generate_playlist
 
-# generated using : https://curlconverter.com/ to convert
-# https://developer.spotify.com/documentation/web-api/reference/get-playlist curl request
+
+# Spotify API credentials setup (client_id and client_secret)
+def get_spotify_token(client_id, client_secret):
+    data = {
+        'grant_type': 'client_credentials',
+        'client_id': client_id,
+        'client_secret': client_secret,
+    }
+    api_response = requests.post('https://accounts.spotify.com/api/token', data=data)
+    token = api_response.json()['access_token']
+    return token
 
 
-# getting an access token from spotify
-# how to get a client_id and client_secret:
-# GO TO: https://developer.spotify.com/dashboard
-# create an 'app' and reveal the ID's by navigating to the 'Settings'
-data = {
-    'grant_type': 'client_credentials',
-    'client_id': 'ENTER YOUR ID',
-    'client_secret': 'ENTER YOUR SECRET ID',
-}
-
-response1 = requests.post('https://accounts.spotify.com/api/token', data=data)
-
-#print(response1.json())
-token = response1.json()['access_token']
-
-headers = {
-    'Authorization': f'Bearer {token}',
-}
-
-params = {
-    # no need to fill
-}
-
-# input playlist link
-link = str(input("enter spotify playlist link: ")).split("/")[4].split("?")[0]
-response = requests.get(f'https://api.spotify.com/v1/playlists/{link}', params=params, headers=headers)
+# Get playlist details from Spotify API
+def get_spotify_playlist_details(token, playlist_id):
+    headers = {
+        'Authorization': f'Bearer {token}',
+    }
+    response = requests.get(f'https://api.spotify.com/v1/playlists/{playlist_id}', headers=headers)
+    return response.json()
 
 
-jsonR = response.json()
-#print(jsonR)
-file = open("list.txt", "w+")
-
-
-for data in jsonR["tracks"]["items"]:
-    track = finditem(data, "name")
-    artist = data['track']['album']['artists'][0]['name']
-
-    results = YoutubeSearch(track + " " + artist, max_results=1).to_json()
-
-    print(track + " " + artist)
+# Search for a YouTube video based on track name and artist
+def search_youtube_video(track, artist):
+    results = YoutubeSearch(f"{track} {artist}", max_results=1).to_json()
     results = json.loads(results)
+    return results
 
-    # Accessing url_suffix for each video
-    for video in results['videos']:
-        if video['url_suffix'].__contains__("shorts"):
-            print("Can't find it!")
-        else:
-            youtube_url = f"https://www.youtube.com{video['url_suffix']}"
-            print(f"Found video URL: {youtube_url}")
-            file.write(youtube_url + "\n")
-            youtube_to_mp3(youtube_url)  # Convert to MP3
 
-#A link to a YouTube playlist containing all the songs from the spotify playlist.
-file.seek(0)
-print("\n\n\n")
-print("YouTube Playlist Link: ")
-print(generate_playlist(file.read()))
+# Process the playlist and convert YouTube videos to MP3
+def process_playlist(response_json, file):
+    for data in response_json["tracks"]["items"]:
+        track = finditem(data, "name")
+        artist = data['track']['album']['artists'][0]['name']
 
-file.close()
+        # Search for the track on YouTube
+        results = search_youtube_video(track, artist)
+        print(f"Downloading:    {track} {artist}")
+
+        # Extract video URL from YouTube search results
+        for video in results['videos']:
+            if "shorts" in video['url_suffix']:
+                print("Can't find it!")
+            else:
+                youtube_url = f"https://www.youtube.com{video['url_suffix']}"
+                print(f"Found video URL: {youtube_url}")
+                file.write(youtube_url + "\n")
+                youtube_to_mp3(youtube_url)  # Convert to MP3
+
+
+# Main function
+def main():
+    client_id = 'ENTER YOUR ID'  # Replace with your Spotify client_id
+    client_secret = 'ENTER YOUR SECRET ID'  # Replace with your Spotify client_secret
+
+    # Get Spotify access token
+    token = get_spotify_token(client_id, client_secret)
+
+    # Input Spotify playlist link
+    link = input("Enter Spotify playlist link: ").split("/")[4].split("?")[0]
+
+    # Get playlist details from Spotify
+    response_json = get_spotify_playlist_details(token, link)
+
+    # Open a file to write YouTube URLs
+    file = open("list.txt", "w+")
+
+    # Process the playlist and download videos
+    process_playlist(response_json, file)
+
+    # Generate and print YouTube playlist link
+    file.seek(0)
+    print("\n\n\nYouTube Playlist Link:")
+    print(generate_playlist(file.read()))
+
+    # Close the file after use
+    file.close()
+
+
+main()
