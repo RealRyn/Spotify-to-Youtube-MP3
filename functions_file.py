@@ -61,15 +61,3 @@ def generate_playlist(all_links):
     playlist_link = f"https://www.youtube.com/watch_videos?video_ids={','.join(array_of_ids)}"
     return playlist_link
 
-# Example usage
-# if __name__ == "__main__":
-#     # Replace this string with your YouTube links (one link per line)
-#     all_links = """
-#     https://www.youtube.com/watch?v=dQw4w9WgXcQ
-#     https://youtu.be/tgbNymZ7vqY
-#     https://www.youtube.com/watch?v=3JZ_D3ELwOQ&feature=share
-#     """
-#
-#     playlist_url = generate_playlist(all_links)
-#     print("Your YouTube Playlist URL:")
-#     print(playlist_url)
